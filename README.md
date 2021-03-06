@@ -1,3 +1,3 @@
-#1 Zuul-inspired Dwarfgame
+#Zuul-inspired Dwarfgame
 
 Made while working my way through Ojects First with Java. 
