@@ -146,7 +146,7 @@ public class Game
         System.out.println("around at the university.");
         System.out.println();
         System.out.println("Your command words are:");
-        parser.showCommands();
+        System.out.println(parser.getCommandList());
     }
 
     /** 
@@ -201,7 +201,7 @@ public class Game
     }
     
     /**
-     * Eat something.
+     * Eat something. Will add player with need to eat in time.
      */
     private void eat()
     {

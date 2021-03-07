@@ -40,14 +40,16 @@ public class CommandWords
     }
     
     /**
-     * Print all valid commands.
+     * Return all valid commands.
+     * @Return String String containing all valid commands with whitespace delimiter. 
      */
-    public void showAll()
+    public String getCommandList()
     {
+        String CommandList = ""; 
         for(String command : validCommands) {
-            System.out.print(command + " ");
+            CommandList += command + " ";
         }
-        System.out.println();
+        return CommandList;
     }
     
 }

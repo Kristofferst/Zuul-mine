@@ -14,10 +14,12 @@
  */
 import java.util.HashMap;
 import java.util.Set;
+import java.util.ArrayList;
 public class Room 
 {
     private String description;
     private HashMap<String, Room> exits;
+    private ArrayList<Item> itemsInRoom;
 
     /**
      * Create a room described "description". Initially, it has
@@ -29,6 +31,8 @@ public class Room
     {
         this.description = description;
         exits = new HashMap<>();
+        itemsInRoom = new ArrayList<Item>();
+        itemsInRoom.add(new Item(20.0, "Sledge"));
     }
 
     /**
@@ -56,9 +60,17 @@ public class Room
      */
     public String getLongDescription()
     {
-        return "You are " + description + ".\n" + getExitString();
+        return "You are " + description + ".\n" + getItems() + ".\n" + getExitString();
     }
     
+    public String getItems()
+    {
+        String itemString = "Items: ";
+        for(Item item : itemsInRoom){
+            itemString += item.getDescription();
+        }
+        return itemString;
+    }
     
     /**
      * Getter for exit in given direction. 

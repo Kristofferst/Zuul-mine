@@ -64,11 +64,12 @@ public class Parser
     }
     
     /**
-     * Print out valid commands
+     * Return all valid commands.
+     * @Return String String containing all valid commands with whitespace delimiter.
      */
-    public void showCommands()
+    public String getCommandList()
     {
-        commands.showAll();
+        return commands.getCommandList();
     }
     
 }
