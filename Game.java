@@ -14,17 +14,19 @@
  * @author  Kristoffer Stokkeland, (Original Michael Kölling and David J. Barnes)
  * @version 2021.03.06
  */
-
+import java.util.Random;
 public class Game 
 {
     private Parser parser;
     private Room currentRoom;
+    private Random randomizer;
         
     /**
      * Create the game and initialise its internal map.
      */
     public Game() 
     {
+        randomizer = new Random();
         createRooms();
         parser = new Parser();
     }
@@ -35,6 +37,7 @@ public class Game
     private void createRooms()
     {
         Room outside, theater, pub, lab, upstairs, office;
+        
       
         // create the rooms
         outside = new Room("outside the main entrance of the university");
@@ -55,9 +58,20 @@ public class Game
         lab.setExit("up", upstairs);
         office.setExit("west", lab);
         upstairs.setExit("down", lab);
-
+        
+        // add items
+        if(randomizer.nextBoolean()==true){
+            outside.addItem(20.0, "Rock");
+        }
+                if(randomizer.nextBoolean()==true){
+            theater.addItem(20.0, "Rock");
+        }
+                if(randomizer.nextBoolean()==true){
+            pub.addItem(20.0, "Rock");
+        }
         currentRoom = outside;  // start game outside
     }
+    
 
     /**
      *  Main play routine.  Loops until end of play.

@@ -32,7 +32,6 @@ public class Room
         this.description = description;
         exits = new HashMap<>();
         itemsInRoom = new ArrayList<Item>();
-        itemsInRoom.add(new Item(20.0, "Sledge"));
     }
 
     /**
@@ -60,16 +59,25 @@ public class Room
      */
     public String getLongDescription()
     {
-        return "You are " + description + ".\n" + getItems() + ".\n" + getExitString();
+        return "You are " + description + ".\n" + getItems() + "\n" + getExitString();
     }
     
     public String getItems()
     {
-        String itemString = "Items: ";
-        for(Item item : itemsInRoom){
-            itemString += item.getDescription();
+        if(itemsInRoom.isEmpty() == false){
+            String itemString = "Items: ";
+            for(Item item : itemsInRoom){
+                itemString += " " + item.getDescription();
+            }
+            itemString +=".";
+            return itemString;
         }
-        return itemString;
+        return "";
+    }
+    
+    public void addItem(double weight, String description)
+    {
+        itemsInRoom.add(new Item(weight, description));
     }
     
     /**
