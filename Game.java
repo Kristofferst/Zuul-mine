@@ -15,13 +15,13 @@
  * @version 2021.03.06
  */
 import java.util.Random;
-import java.util.Stack;
+import java.util.Stack; //Moving to player
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
+    private Room currentRoom; //Moving to Player
     private Random randomizer;
-    private Stack<Room> roomHistory;
+    private Stack<Room> roomHistory; //Moving to Player
         
     /**
      * Create the game and initialise its internal map.
@@ -29,7 +29,7 @@ public class Game
     public Game() 
     {
         randomizer = new Random();
-        roomHistory = new Stack<Room>();
+        roomHistory = new Stack<Room>(); //Moving to player
         createRooms();
         parser = new Parser();
     }
@@ -62,7 +62,7 @@ public class Game
         office.setExit("west", lab);
         upstairs.setExit("down", lab);
         
-        // add items
+        // add items. Will need rework. Just done this way to get something and showing use of randomizer.
         if(randomizer.nextBoolean()==true){
             outside.addItem(20.0, "Rock");
         }
@@ -72,8 +72,8 @@ public class Game
                 if(randomizer.nextBoolean()==true){
             pub.addItem(20.0, "Rock");
         }
-        currentRoom = outside;  // start game outside
-        roomHistory.push(currentRoom);
+        currentRoom = outside;  // start game outside, will be handled by player constructor
+        roomHistory.push(currentRoom); // Move to player
     }
     
 
@@ -191,8 +191,8 @@ public class Game
             System.out.println("There is no door!");
         }
         else {
-            currentRoom = nextRoom;
-            roomHistory.push(currentRoom);
+            currentRoom = nextRoom; // Move to player
+            roomHistory.push(currentRoom); //Move to player
             printLocationInfo();
             System.out.println();
         }
@@ -208,7 +208,7 @@ public class Game
         }
         else{
             System.out.println("You go back.");
-            currentRoom = roomHistory.pop();
+            currentRoom = roomHistory.pop(); //Move to player
             printLocationInfo();
             System.out.println();
         }
