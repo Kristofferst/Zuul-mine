@@ -3,8 +3,8 @@ import java.util.Stack;
 /**
  * Write a description of class Player here.
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Kristoffer Stokkeland
+ * @version 0.0.1
  */
 
 public class Player
@@ -45,8 +45,27 @@ public class Player
     /**
      * Change room
      */
-    public void moveRoom(){
-    
+    public void moveRoom(Room nextRoom)
+    {
+        currentRoom = nextRoom;
+        roomHistory.push(currentRoom);
     }
+   
+    
+    public boolean backPossible()
+    {
+        return roomHistory.empty();
+    }
+    
+    public void moveBack()
+    {
+        currentRoom = roomHistory.pop();
+    }
+    
+    public Room getCurrentRoom()
+    {
+        return currentRoom;
+    }
+    
     
 }

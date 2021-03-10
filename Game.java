@@ -15,13 +15,13 @@
  * @version 2021.03.06
  */
 import java.util.Random;
-import java.util.Stack; //Moving to player
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom; //Moving to Player
+    private Room startRoom;
     private Random randomizer;
-    private Stack<Room> roomHistory; //Moving to Player
+    private Player player;
+    
         
     /**
      * Create the game and initialise its internal map.
@@ -29,8 +29,8 @@ public class Game
     public Game() 
     {
         randomizer = new Random();
-        roomHistory = new Stack<Room>(); //Moving to player
         createRooms();
+        player = new Player(startRoom);
         parser = new Parser();
     }
 
@@ -72,8 +72,8 @@ public class Game
                 if(randomizer.nextBoolean()==true){
             pub.addItem(20.0, "Rock");
         }
-        currentRoom = outside;  // start game outside, will be handled by player constructor
-        roomHistory.push(currentRoom); // Move to player
+        
+        startRoom = outside; // start game outside
     }
     
 
@@ -114,7 +114,7 @@ public class Game
      */
     private void printLocationInfo()
     {
-       System.out.println(currentRoom.getLongDescription());
+       System.out.println(player.getCurrentRoom().getLongDescription());
     }
     
     /**
@@ -185,14 +185,13 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
+        Room nextRoom = player.getCurrentRoom().getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
         else {
-            currentRoom = nextRoom; // Move to player
-            roomHistory.push(currentRoom); //Move to player
+            player.moveRoom(nextRoom);
             printLocationInfo();
             System.out.println();
         }
@@ -203,12 +202,12 @@ public class Game
      */
     private void back()
     {
-        if(roomHistory.empty()==true){
+        if(player.backPossible()==true){
             System.out.println("You have nowhere to go back to.");
         }
         else{
             System.out.println("You go back.");
-            currentRoom = roomHistory.pop(); //Move to player
+            player.moveBack();
             printLocationInfo();
             System.out.println();
         }
@@ -235,7 +234,7 @@ public class Game
      */
     private void look()
     {
-        System.out.println(currentRoom.getLongDescription());
+        System.out.println(player.getCurrentRoom().getLongDescription());
     }
     
     /**
