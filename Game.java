@@ -15,11 +15,13 @@
  * @version 2021.03.06
  */
 import java.util.Random;
+import java.util.Stack;
 public class Game 
 {
     private Parser parser;
     private Room currentRoom;
     private Random randomizer;
+    private Stack<Room> roomHistory;
         
     /**
      * Create the game and initialise its internal map.
@@ -27,6 +29,7 @@ public class Game
     public Game() 
     {
         randomizer = new Random();
+        roomHistory = new Stack<Room>();
         createRooms();
         parser = new Parser();
     }
@@ -70,6 +73,7 @@ public class Game
             pub.addItem(20.0, "Rock");
         }
         currentRoom = outside;  // start game outside
+        roomHistory.push(currentRoom);
     }
     
 
@@ -140,6 +144,9 @@ public class Game
         else if (commandWord.equals("eat")) {
             eat();
         }
+        else if (commandWord.equals("back")) {
+            back();
+        }
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
         }
@@ -185,6 +192,23 @@ public class Game
         }
         else {
             currentRoom = nextRoom;
+            roomHistory.push(currentRoom);
+            printLocationInfo();
+            System.out.println();
+        }
+    }
+    
+    /**
+     * Will be used to go back first one room and then mulitible rooms using a stack
+     */
+    private void back()
+    {
+        if(roomHistory.empty()==true){
+            System.out.println("You have nowhere to go back to.");
+        }
+        else{
+            System.out.println("You go back.");
+            currentRoom = roomHistory.pop();
             printLocationInfo();
             System.out.println();
         }
