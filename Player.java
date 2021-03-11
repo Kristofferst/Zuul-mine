@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.HashMap;
 /**
  * Player
  *
@@ -10,7 +11,7 @@ import java.util.Stack;
 public class Player
 {
     private double weightLimit;
-    private ArrayList<Item> inventory;
+    private HashMap<String, Item> inventory;
     private String name; //Need to add rest of logic
     private Room currentRoom;
     private Stack<Room> roomHistory;
@@ -23,7 +24,7 @@ public class Player
     {
         // Item logic
         weightLimit = 15000.00; //What unit is this in? Who knows?
-        inventory = new ArrayList<Item>();       
+        inventory = new HashMap<String, Item>();       
         
         // Room logic
         roomHistory = new Stack<Room>();
@@ -39,23 +40,45 @@ public class Player
     {
         Item item = currentRoom.getItem(itemAsString);
         String returnString = "";
+        //check if item exists
+        if(item==null){
+            returnString = "You look to pick up "+itemAsString+", but can't fint it.";
+        }
         //check weight if over return 
         if(getTotaltWeight()+item.getWeight()>weightLimit){
             returnString = "You can't pick up";    
             return returnString;
         }
         else{
-            inventory.add(item);
+            inventory.put(itemAsString, item);
             currentRoom.removeItem(itemAsString);
             returnString = "You pick up "+item.getDescription();
             return returnString;
         }
     }
     
+    public Item getItem(String itemToGet){
+        return inventory.get(itemToGet);
+    }
+    
+    public String dropItem(String itemAsString)
+    {
+        Item item = getItem(itemAsString);
+        if(item==null){
+            return "You look to drop "+itemAsString+", but can't fint it." ;
+        }
+        else{
+            currentRoom.addItem(itemAsString, item);
+            inventory.remove(itemAsString);
+            return "You dropped "+itemAsString+".";
+        }
+        
+    }
+    
     public double getTotaltWeight()
     {
         double totalWeight = 0.0;
-        for(Item item : inventory){
+        for(Item item : inventory.values()){
             totalWeight += item.getWeight();
         }
         return totalWeight;
@@ -64,12 +87,13 @@ public class Player
     public String getInventory()
     {
         String inventoryString = "";
-        for(Item item : inventory){
+        for(Item item : inventory.values()){
             inventoryString += item.getDescription() + " Weight: " + item.getWeight() + "\r\n";
         }
         return inventoryString;
     }
     
+    //Movement    
     /**
      * Change room
      */
@@ -78,8 +102,13 @@ public class Player
         currentRoom = nextRoom;
         roomHistory.push(currentRoom);
     }
-   
+
+    public Room getCurrentRoom()
+    {
+        return currentRoom;
+    }
     
+    //Going back
     /**
      * Is moving back possible? 
      * @return true/false Is roomHistory empty?
@@ -93,11 +122,7 @@ public class Player
     {
         currentRoom = roomHistory.pop();
     }
-    
-    public Room getCurrentRoom()
-    {
-        return currentRoom;
-    }
+   
     
     
 }

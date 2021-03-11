@@ -63,15 +63,15 @@ public class Game
         upstairs.setExit("down", lab);
         
         // add items. Will need rework. Just done this way to get something and showing use of randomizer.
-        outside.addItem("Book", 5.0, "Book");
+        outside.addNewItem("Book", 5.0, "Book");
         if(randomizer.nextBoolean()==true){
-            outside.addItem("Rock", 20.0, "Rock");
+            outside.addNewItem("Rock", 20.0, "Rock");
         }
                 if(randomizer.nextBoolean()==true){
-            theater.addItem("Rock", 20.0, "Rock");
+            theater.addNewItem("Rock", 20.0, "Rock");
         }
                 if(randomizer.nextBoolean()==true){
-            pub.addItem("Rock", 20.0, "Rock");
+            pub.addNewItem("Rock", 20.0, "Rock");
         }
         
         startRoom = outside; // start game outside
@@ -143,7 +143,7 @@ public class Game
             look();
         }
         else if (commandWord.equals("eat")) {
-            eat();
+            eat(command);
         }
         else if (commandWord.equals("back")) {
             back();
@@ -246,19 +246,29 @@ public class Game
         System.out.println(player.getCurrentRoom().getLongDescription());
     }
     
+    //Not done
     /**
      * Eat something. Will add player with need to eat in time.
      */
-    private void eat()
+    private void eat(Command command)
     {
-        System.out.println("You have eaten and are not hungry any more.");
+        if(!command.hasSecondWord()) {
+            System.out.println("You can't figure out what you want to drop.");
+            return;
+        }
+        else{
+            System.out.println("You have eaten and are not hungry any more.");
+        }
     }
     
     private void drop(Command command){
         if(!command.hasSecondWord()) {
-            System.out.println("Drop what?");
+            System.out.println("You can't figure out what you want to drop.");
             return;
         }
+        
+        String itemAsString = command.getSecondWord();
+        System.out.println(player.dropItem(itemAsString));
     }
     private void take(Command command){
         if(!command.hasSecondWord()) {
@@ -267,14 +277,7 @@ public class Game
         }
         
         String itemAsString = command.getSecondWord();
-        //Room check for item based on String return objectref for
-        Item item = player.getCurrentRoom().getItem(itemAsString);
-        if(item==null){
-            System.out.println("You look to pick up "+itemAsString+", but can't fint it.");
-        }
-        else{
-            System.out.println(player.addItem(itemAsString));
-        }
+        System.out.println(player.addItem(itemAsString));
         
     }
     private void inventory(){

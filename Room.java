@@ -6,7 +6,6 @@
  */
 import java.util.HashMap;
 import java.util.Set;
-import java.util.ArrayList;
 public class Room 
 {
     private String description;
@@ -54,6 +53,7 @@ public class Room
         return "You are " + description + ".\n" + getItems() + "\n" + getExitString();
     }
     
+    // Items
     public String getItems()
     {
         if(itemsInRoom.isEmpty() == false){
@@ -75,11 +75,18 @@ public class Room
         itemsInRoom.remove(itemToRemove);
     }
     
-    public void addItem(String name, double weight, String description)
+    public void addNewItem(String name, double weight, String description)
     {
         itemsInRoom.put(name, new Item(weight, description));
     }
     
+    public void addItem(String name, Item item)
+    {
+        itemsInRoom.put(name, item);
+    }
+    
+    
+    // Exits
     /**
      * Getter for exit in given direction. 
      * @return the exit
