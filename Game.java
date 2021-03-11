@@ -11,7 +11,7 @@
  *  rooms, creates the parser and starts the game.  It also evaluates and
  *  executes the commands that the parser returns.
  * 
- * @author  Kristoffer Stokkeland, (Original Michael Kölling and David J. Barnes)
+ * @author  Kristoffer Stokkeland, 
  * @version 2021.03.06
  */
 import java.util.Random;

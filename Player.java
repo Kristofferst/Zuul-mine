@@ -1,18 +1,17 @@
 import java.util.ArrayList;
 import java.util.Stack;
 /**
- * Write a description of class Player here.
+ * Player
  *
- * @author Kristoffer Stokkeland
- * @version 0.0.1
+ * @author  Kristoffer Stokkeland
+ * @version 2021.03.11
  */
 
 public class Player
 {
-    // instance variables - replace the example below with your own
     private double weightLimit;
     private ArrayList<Item> inventory;
-  
+    private String name; //Need to add rest of logic
     private Room currentRoom;
     private Stack<Room> roomHistory;
     
@@ -23,7 +22,7 @@ public class Player
     public Player(Room startRoom)
     {
         // Item logic
-        weightLimit = 15000.00;
+        weightLimit = 15000.00; //What unit is this in? Who knows?
         inventory = new ArrayList<Item>();       
         
         // Room logic
@@ -38,7 +37,6 @@ public class Player
      */
     public String addItem(String itemAsString)
     {
-        // put your code here
         Item item = currentRoom.getItem(itemAsString);
         String returnString = "";
         //check weight if over return 

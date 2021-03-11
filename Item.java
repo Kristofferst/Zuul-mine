@@ -3,7 +3,7 @@
  * Class to represent items found in the game. For now weight and description.
  *
  * @author Kristoffer Stokkeland
- * @version 07.05.2021
+ * @version 2021.03.11
  */
 public class Item
 {
