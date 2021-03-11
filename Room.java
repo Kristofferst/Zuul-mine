@@ -19,7 +19,7 @@ public class Room
 {
     private String description;
     private HashMap<String, Room> exits;
-    private ArrayList<Item> itemsInRoom;
+    private HashMap<String, Item> itemsInRoom;
 
     /**
      * Create a room described "description". Initially, it has
@@ -31,7 +31,7 @@ public class Room
     {
         this.description = description;
         exits = new HashMap<>();
-        itemsInRoom = new ArrayList<Item>();
+        itemsInRoom = new HashMap<String, Item>();
     }
 
     /**
@@ -66,7 +66,7 @@ public class Room
     {
         if(itemsInRoom.isEmpty() == false){
             String itemString = "Items: ";
-            for(Item item : itemsInRoom){
+            for(Item item : itemsInRoom.values()){
                 itemString += " " + item.getDescription();
             }
             itemString +=".";
@@ -75,9 +75,17 @@ public class Room
         return "";
     }
     
-    public void addItem(double weight, String description)
+    public Item getItem(String itemToGet){
+        return itemsInRoom.get(itemToGet);
+    }
+    
+    public void removeItem(String itemToRemove){
+        itemsInRoom.remove(itemToRemove);
+    }
+    
+    public void addItem(String name, double weight, String description)
     {
-        itemsInRoom.add(new Item(weight, description));
+        itemsInRoom.put(name, new Item(weight, description));
     }
     
     /**
