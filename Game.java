@@ -21,7 +21,6 @@ public class Game
     private Room startRoom;
     private Random randomizer;
     private Player player;
-    
         
     /**
      * Create the game and initialise its internal map.
@@ -253,7 +252,7 @@ public class Game
     private void eat(Command command)
     {
         if(!command.hasSecondWord()) {
-            System.out.println("You can't figure out what you want to drop.");
+            System.out.println("You can't figure out what you want to eat.");
             return;
         }
         else{

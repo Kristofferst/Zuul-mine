@@ -77,7 +77,7 @@ public class Room
     
     public void addNewItem(String name, double weight, String description)
     {
-        itemsInRoom.put(name, new Item(weight, description));
+        itemsInRoom.put(name, new Item(name, weight, description));
     }
     
     public void addItem(String name, Item item)
