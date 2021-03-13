@@ -1,25 +1,16 @@
 /**
  * Class Room - a room in an adventure game.
  *
- * This class is part of the "World of Zuul" application. 
- * "World of Zuul" is a very simple, text based adventure game.  
- *
- * A "Room" represents one location in the scenery of the game.  It is 
- * connected to other rooms via exits.  The exits are labelled north, 
- * east, south, west.  For each direction, the room stores a reference
- * to the neighboring room, or null if there is no exit in that direction.
- * 
- * @author  Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * @author  Kristoffer Stokkeland
+ * @version 2021.03.11
  */
 import java.util.HashMap;
 import java.util.Set;
-import java.util.ArrayList;
-public class Room 
+public class Room
 {
     private String description;
     private HashMap<String, Room> exits;
-    private ArrayList<Item> itemsInRoom;
+    private HashMap<String, Item> itemsInRoom;
 
     /**
      * Create a room described "description". Initially, it has
@@ -31,7 +22,7 @@ public class Room
     {
         this.description = description;
         exits = new HashMap<>();
-        itemsInRoom = new ArrayList<Item>();
+        itemsInRoom = new HashMap<String, Item>();
     }
 
     /**
@@ -62,11 +53,12 @@ public class Room
         return "You are " + description + ".\n" + getItems() + "\n" + getExitString();
     }
     
+    // Items
     public String getItems()
     {
         if(itemsInRoom.isEmpty() == false){
             String itemString = "Items: ";
-            for(Item item : itemsInRoom){
+            for(Item item : itemsInRoom.values()){
                 itemString += " " + item.getDescription();
             }
             itemString +=".";
@@ -75,11 +67,26 @@ public class Room
         return "";
     }
     
-    public void addItem(double weight, String description)
-    {
-        itemsInRoom.add(new Item(weight, description));
+    public Item getItem(String itemToGet){
+        return itemsInRoom.get(itemToGet);
     }
     
+    public void removeItem(String itemToRemove){
+        itemsInRoom.remove(itemToRemove);
+    }
+    
+    public void addNewItem(String name, double weight, String description)
+    {
+        itemsInRoom.put(name, new Item(name, weight, description));
+    }
+    
+    public void addItem(String name, Item item)
+    {
+        itemsInRoom.put(name, item);
+    }
+    
+    
+    // Exits
     /**
      * Getter for exit in given direction. 
      * @return the exit

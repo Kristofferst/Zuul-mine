@@ -1,43 +1,34 @@
 
 /**
- * Class to represent items found in the game. For now weight and description.
+ * Class to represent items found in the game. 
  *
  * @author Kristoffer Stokkeland
- * @version 07.05.2021
+ * @version 2021.03.11
  */
 public class Item
 {
     // instance variables - replace the example below with your own
+    private String name;
     private double weight;
     private String description;
 
     /**
      * Constructor for objects of class Item
      */
-    public Item(double weight, String description)
+    public Item(String name, double weight, String description)
     {
-        // initialise instance variables
+        this.name = name;
         this.weight = weight;
         this.description = description;
     }
-
-    /**
-     * Getter for Weight
-     * @return    Weight of item
-     */
-    public double getWeight()
-    {
-        // put your code here
-        return weight;
-    }
     
-    /**
-     * Getter for Description
-     * @return    Description of item
-     */
-    public String getDescription()
-    {
-        // put your code here
-        return description;
-    }
+    //Getters
+    public double getWeight(){return weight;}
+    public String getDescription(){return description;}
+    public String getName(){return name;}
+    
+    //Setters
+    public void setWeight(double weight){this.weight = weight;}
+    public void setDescription(String description){this.description = description;}
+    public void setName(String name){this.name = name;}
 }

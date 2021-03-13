@@ -11,17 +11,16 @@
  *  rooms, creates the parser and starts the game.  It also evaluates and
  *  executes the commands that the parser returns.
  * 
- * @author  Kristoffer Stokkeland, (Original Michael Kölling and David J. Barnes)
+ * @author  Kristoffer Stokkeland, 
  * @version 2021.03.06
  */
 import java.util.Random;
-import java.util.Stack;
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
+    private Room startRoom;
     private Random randomizer;
-    private Stack<Room> roomHistory;
+    private Player player;
         
     /**
      * Create the game and initialise its internal map.
@@ -29,8 +28,8 @@ public class Game
     public Game() 
     {
         randomizer = new Random();
-        roomHistory = new Stack<Room>();
         createRooms();
+        player = new Player(startRoom);
         parser = new Parser();
     }
 
@@ -62,18 +61,19 @@ public class Game
         office.setExit("west", lab);
         upstairs.setExit("down", lab);
         
-        // add items
+        // add items. Will need rework. Just done this way to get something and showing use of randomizer.
+        outside.addNewItem("Book", 5.0, "Book");
         if(randomizer.nextBoolean()==true){
-            outside.addItem(20.0, "Rock");
+            outside.addNewItem("Rock", 20.0, "Rock");
         }
                 if(randomizer.nextBoolean()==true){
-            theater.addItem(20.0, "Rock");
+            theater.addNewItem("Rock", 20.0, "Rock");
         }
                 if(randomizer.nextBoolean()==true){
-            pub.addItem(20.0, "Rock");
+            pub.addNewItem("Rock", 20.0, "Rock");
         }
-        currentRoom = outside;  // start game outside
-        roomHistory.push(currentRoom);
+        
+        startRoom = outside; // start game outside
     }
     
 
@@ -114,7 +114,7 @@ public class Game
      */
     private void printLocationInfo()
     {
-       System.out.println(currentRoom.getLongDescription());
+       System.out.println(player.getCurrentRoom().getLongDescription());
     }
     
     /**
@@ -142,10 +142,19 @@ public class Game
             look();
         }
         else if (commandWord.equals("eat")) {
-            eat();
+            eat(command);
         }
         else if (commandWord.equals("back")) {
             back();
+        }
+        else if (commandWord.equals("drop")) {
+            drop(command);
+        }
+        else if (commandWord.equals("take")) {
+            take(command);
+        }
+        else if (commandWord.equals("inventory")) {
+            inventory();
         }
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
@@ -155,7 +164,6 @@ public class Game
     }
 
     // implementations of user commands:
-
     /**
      * Print out some help information.
      * Here we print some stupid, cryptic message and a list of the 
@@ -185,14 +193,13 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
+        Room nextRoom = player.getCurrentRoom().getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
         else {
-            currentRoom = nextRoom;
-            roomHistory.push(currentRoom);
+            player.moveRoom(nextRoom);
             printLocationInfo();
             System.out.println();
         }
@@ -203,12 +210,12 @@ public class Game
      */
     private void back()
     {
-        if(roomHistory.empty()==true){
+        if(player.backPossible()==true){
             System.out.println("You have nowhere to go back to.");
         }
         else{
             System.out.println("You go back.");
-            currentRoom = roomHistory.pop();
+            player.moveBack();
             printLocationInfo();
             System.out.println();
         }
@@ -235,14 +242,49 @@ public class Game
      */
     private void look()
     {
-        System.out.println(currentRoom.getLongDescription());
+        System.out.println(player.getCurrentRoom().getLongDescription());
     }
     
+    //Not done
     /**
      * Eat something. Will add player with need to eat in time.
      */
-    private void eat()
+    private void eat(Command command)
     {
-        System.out.println("You have eaten and are not hungry any more.");
+        if(!command.hasSecondWord()) {
+            System.out.println("You can't figure out what you want to eat.");
+            return;
+        }
+        else{
+            System.out.println("You have eaten and are not hungry any more.");
+        }
+    }
+    
+    private void drop(Command command){
+        if(!command.hasSecondWord()) {
+            System.out.println("You can't figure out what you want to drop.");
+            return;
+        }
+        
+        String itemAsString = command.getSecondWord();
+        System.out.println(player.dropItem(itemAsString));
+    }
+    private void take(Command command){
+        if(!command.hasSecondWord()) {
+            System.out.println("You can't figure out what you want to take.");
+            return;
+        }
+        
+        String itemAsString = command.getSecondWord();
+        System.out.println(player.addItem(itemAsString));
+        
+    }
+    private void inventory(){
+        String inventory = player.getInventory();
+        if(inventory.length()>0)
+            System.out.println(inventory);
+        else{
+            System.out.println("Your inventory is empty.");
+        }
     }
 }
