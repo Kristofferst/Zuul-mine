@@ -41,8 +41,9 @@ public class Player
         Item item = currentRoom.getItem(itemAsString);
         String returnString = "";
         //check if item exists
-        if(item==null){
-            returnString = "You look to pick up "+itemAsString+", but can't fint it.";
+        if(item==null)
+        {
+            return returnString = "You look to pick up "+itemAsString+", but can't fint it.";
         }
         //check weight if over return 
         if(getTotaltWeight()+item.getWeight()>weightLimit){
