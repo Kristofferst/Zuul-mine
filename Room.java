@@ -6,7 +6,7 @@
  */
 import java.util.HashMap;
 import java.util.Set;
-public class Room 
+public class Room
 {
     private String description;
     private HashMap<String, Room> exits;
