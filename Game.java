@@ -47,7 +47,7 @@ public class Game
         pub = new Room("in the campus pub");
         lab = new Room("in a computing lab");
         upstairs = new Room("upstairs in the computing lab");
-        office = new Room("in the computing admin office");
+        office = new Room("in the computing admin office");      
         
         // initialise room exits
         outside.setExit("east", theater);
@@ -125,41 +125,52 @@ public class Game
     private boolean processCommand(Command command) 
     {
         boolean wantToQuit = false;
-
-        if(command.isUnknown()) {
-            System.out.println("I don't know what you mean...");
-            return false;
+        
+        CommandWord commandWord = command.getCommandWord();
+        
+        switch (commandWord) 
+        {
+            case UNKNOWN:
+                System.out.println("I don't know what you mean...");
+                break;
+            
+            case HELP:
+                printHelp();
+                break;
+            
+            case GO:
+                goRoom(command);
+                break;
+                
+            case LOOK:
+                look();
+                break;
+            
+            case EAT:
+                eat(command);
+                break;
+            
+            case BACK:
+                back();
+                break;
+            
+            case TAKE:
+                take(command);
+                break;
+            
+            case DROP:
+                drop(command);
+                break;
+            
+            case INVENTORY:
+                inventory();
+                break;
+                
+            case QUIT:
+                wantToQuit = quit(command);
+                break;
+         
         }
-
-        String commandWord = command.getCommandWord();
-        if (commandWord.equals("help")) {
-            printHelp();
-        }
-        else if (commandWord.equals("go")) {
-            goRoom(command);
-        }
-        else if (commandWord.equals("look")) {
-            look();
-        }
-        else if (commandWord.equals("eat")) {
-            eat(command);
-        }
-        else if (commandWord.equals("back")) {
-            back();
-        }
-        else if (commandWord.equals("drop")) {
-            drop(command);
-        }
-        else if (commandWord.equals("take")) {
-            take(command);
-        }
-        else if (commandWord.equals("inventory")) {
-            inventory();
-        }
-        else if (commandWord.equals("quit")) {
-            wantToQuit = quit(command);
-        }
-
         return wantToQuit;
     }
 
