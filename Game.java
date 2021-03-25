@@ -40,42 +40,35 @@ public class Game
      */
     private void createRooms()
     {
-        Room outside, theater, pub, lab, upstairs, office;
-        
-      
         // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        upstairs = new Room("upstairs in the computing lab");
-        office = new Room("in the computing admin office");      
+        Room outside = new Room("outside the walls of Castle Drachenfels. To the north is the Gatehouse, its wooden gates slightly ajar."); // Add gate semiblocking exit N?
+        Room courtyardSouth = new Room("just inside the courtyard. To the north the is the mainkeep. To the south is the gate leading out of the Castle with doors into the gatehouse on each side.");
+        Room gatehouseGroundFloorSE = new Room(""); // Add 4 rotten chairs & table, skeletons/bones, quivers of crossbow bolts, stairs leading up
+        Room gatehouseGroundFloorSW = new Room(""); // Add 4 rotten chairs & table, skeletons/bones, rusted sword on table?, stairs leading up
+        Room gatehouseMiddleFloorSE = new Room(""); 
+        Room gatehouseMiddleFloorSW = new Room("");
+        Room gatehouseMiddlePassage = new Room("");
+        Room gatehouseRoofSE = new Room("");
+        Room gatehouseRoofSW = new Room("");
         
         // initialise room exits
-        outside.setExit("east", theater);
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
-        theater.setExit("west", outside);
-        pub.setExit("east", outside);
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
-        lab.setExit("up", upstairs);
-        office.setExit("west", lab);
-        upstairs.setExit("down", lab);
+        outside.setExit("north", courtyardSouth);
+        courtyardSouth.setExit("south", outside);
+        courtyardSouth.setExit("southeast", gatehouseGroundFloorSE);
+        courtyardSouth.setExit("southwest", gatehouseGroundFloorSW);
+        gatehouseGroundFloorSE.setExit("northwest", courtyardSouth); // Gatehouse SE
+        gatehouseGroundFloorSE.setExit("up", gatehouseMiddleFloorSE);
+        gatehouseMiddleFloorSE.setExit("down", gatehouseGroundFloorSE);
+        gatehouseMiddleFloorSE.setExit("west", gatehouseMiddlePassage);
+        gatehouseMiddleFloorSE.setExit("up", gatehouseRoofSE);
+        gatehouseRoofSE.setExit("down", gatehouseMiddleFloorSE); // Missing SE Wall, end off Gatehouse SE.
+        gatehouseMiddleFloorSW.setExit("northeast", courtyardSouth);
+        gatehouseMiddleFloorSW.setExit("up", gatehouseMiddleFloorSW);
+        gatehouseMiddleFloorSW.setExit("down", gatehouseMiddleFloorSW);
+        // add items
         
-        // add items. Will need rework. Just done this way to get something and showing use of randomizer.
-        outside.addNewItem("Book", 5.0, "Book");
-        if(randomizer.nextBoolean()==true){
-            outside.addNewItem("Rock", 20.0, "Rock");
-        }
-                if(randomizer.nextBoolean()==true){
-            theater.addNewItem("Rock", 20.0, "Rock");
-        }
-                if(randomizer.nextBoolean()==true){
-            pub.addNewItem("Rock", 20.0, "Rock");
-        }
-        
-        startRoom = outside; // start game outside
+        // Start location
+        startRoom = outside; 
     }
     
 
