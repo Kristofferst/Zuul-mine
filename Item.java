@@ -7,10 +7,12 @@
  */
 public class Item
 {
-    // instance variables - replace the example below with your own
-    private String name;
-    private double weight;
+    // instance variables
+    private String name;//colloquial name
+    private String trueName;//fullname for artifacts
+    private double weight;//in kg
     private String description;
+    private boolean isHidden;
 
     /**
      * Constructor for objects of class Item
