@@ -6,11 +6,14 @@
  */
 import java.util.HashMap;
 import java.util.Set;
-public class Room
+import java.util.List;
+import java.util.ArrayList;
+
+public class Room extends Container
 {
     private String description;
     private HashMap<String, Room> exits;
-    private HashMap<String, Item> itemsInRoom;
+    private List<Character> charactersInRoom;
 
     /**
      * Create a room described "description". Initially, it has
@@ -20,9 +23,10 @@ public class Room
      */
     public Room(String description) 
     {
+        super();
         this.description = description;
         exits = new HashMap<>();
-        itemsInRoom = new HashMap<String, Item>();
+        charactersInRoom = new ArrayList();
     }
 
     /**
@@ -50,41 +54,8 @@ public class Room
      */
     public String getLongDescription()
     {
-        return "You are " + description + ".\n" + getItems() + "\n" + getExitString();
+        return "You are " + description + ".\n" + getItems() + "\n" + listCharactersInRoom() + "\n" + getExitString();
     }
-    
-    // Items
-    public String getItems()
-    {
-        if(itemsInRoom.isEmpty() == false){
-            String itemString = "Items: ";
-            for(Item item : itemsInRoom.values()){
-                itemString += " " + item.getDescription();
-            }
-            itemString +=".";
-            return itemString;
-        }
-        return "";
-    }
-    
-    public Item getItem(String itemToGet){
-        return itemsInRoom.get(itemToGet);
-    }
-    
-    public void removeItem(String itemToRemove){
-        itemsInRoom.remove(itemToRemove);
-    }
-    
-    public void addNewItem(String name, double weight, String description)
-    {
-        itemsInRoom.put(name, new Item(name, weight, description));
-    }
-    
-    public void addItem(String name, Item item)
-    {
-        itemsInRoom.put(name, item);
-    }
-    
     
     // Exits
     /**
@@ -112,5 +83,36 @@ public class Room
         return exitString;
     }
     
-
+    public String listCharactersInRoom()
+    {   
+        if (charactersInRoom.isEmpty()==true)
+        {
+            return "";
+        }
+        String returnString = "People: ";
+        for(Character character : charactersInRoom)
+        {
+            returnString += " " + character.getName();
+        }
+        return returnString;
+    }
+    
+    public boolean addCharacterToRoom(Character character)
+    {
+        charactersInRoom.add(character);
+        return true;
+    }
+    
+    public boolean removeCharacterFromRoom(int index, Character character)
+    {
+        if (charactersInRoom.get(index)==character)
+        {
+            charactersInRoom.remove(index);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 }

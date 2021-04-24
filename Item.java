@@ -10,6 +10,7 @@ public class Item
     // instance variables
     private String name;//colloquial name
     private String trueName;//fullname for artifacts
+    private int quantity; //Number of item? 
     private double weight;//in kg
     private String description;
     private boolean isHidden;

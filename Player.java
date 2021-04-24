@@ -2,34 +2,29 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.HashMap;
 /**
- * Player
+ * Class of player. Moves around game.
  *
  * @author  Kristoffer Stokkeland
  * @version 2021.03.11
  */
 
-public class Player
+public class Player extends Character
 {
-    private double weightLimit;
-    private HashMap<String, Item> inventory;
-    private String name; //Need to add rest of logic
-    private Room currentRoom;
+    private double weightLimit; // Move to Actor?
     private Stack<Room> roomHistory;
-    
 
     /**
      * Constructor for objects of class Player
      */
     public Player(Room startRoom)
-    {
+    {   
+        super(startRoom, "Kristoffer");
         // Item logic
-        weightLimit = 15000.00; //What unit is this in? Who knows?
-        inventory = new HashMap<String, Item>();       
+        weightLimit = 50.00; //kg
         
         // Room logic
         roomHistory = new Stack<Room>();
-        currentRoom = startRoom;
-        roomHistory.push(currentRoom);
+        roomHistory.push(startRoom);
     }
 
     /**
@@ -38,7 +33,7 @@ public class Player
      */
     public String addItem(String itemAsString)
     {
-        Item item = currentRoom.getItem(itemAsString);
+        Item item = getCurrentRoom().getItem(itemAsString);
         String returnString = "";
         //check if item exists
         if(item==null)
@@ -51,15 +46,11 @@ public class Player
             return returnString;
         }
         else{
-            inventory.put(itemAsString, item);
-            currentRoom.removeItem(itemAsString);
+            addItem(itemAsString, item);
+            getCurrentRoom().removeItem(itemAsString);
             returnString = "You pick up "+item.getDescription();
             return returnString;
         }
-    }
-    
-    public Item getItem(String itemToGet){
-        return inventory.get(itemToGet);
     }
     
     public String dropItem(String itemAsString)
@@ -69,45 +60,32 @@ public class Player
             return "You look to drop "+itemAsString+", but can't fint it." ;
         }
         else{
-            currentRoom.addItem(itemAsString, item);
-            inventory.remove(itemAsString);
+            getCurrentRoom().addItem(itemAsString, item);
+            removeItem(itemAsString);
             return "You dropped "+itemAsString+".";
         }
         
     }
     
-    public double getTotaltWeight()
-    {
-        double totalWeight = 0.0;
-        for(Item item : inventory.values()){
-            totalWeight += item.getWeight();
-        }
-        return totalWeight;
-    }
-    
     public String getInventory()
     {
-        String inventoryString = "";
-        for(Item item : inventory.values()){
-            inventoryString += item.getDescription() + " Weight: " + item.getWeight() + "\r\n";
-        }
-        return inventoryString;
+        return getItemsWithWeight();
     }
     
     //Movement    
-    /**
-     * Change room
-     */
-    public void moveRoom(Room nextRoom)
+    public String moveRoom(String direction)
     {
-        currentRoom = nextRoom;
-        roomHistory.push(currentRoom);
+        if(super.move(direction)==false)
+        {
+            return "There is no door!";
+        }
+        else
+        {
+            roomHistory.push(getCurrentRoom());
+            return getCurrentRoom().getLongDescription();
+        }
     }
-
-    public Room getCurrentRoom()
-    {
-        return currentRoom;
-    }
+    
     
     //Going back
     /**
@@ -121,9 +99,6 @@ public class Player
     
     public void moveBack()
     {
-        currentRoom = roomHistory.pop();
+        setCurrentRoom(roomHistory.pop());
     }
-   
-    
-    
 }

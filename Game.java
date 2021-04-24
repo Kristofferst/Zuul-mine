@@ -40,32 +40,54 @@ public class Game
      */
     private void createRooms()
     {
+    
         // create the rooms
         Room outside = new Room("outside the walls of Castle Drachenfels. To the north is the Gatehouse, its wooden gates slightly ajar."); // Add gate semiblocking exit N?
         Room courtyardSouth = new Room("just inside the courtyard. To the north the is the mainkeep. To the south is the gate leading out of the Castle with doors into the gatehouse on each side.");
-        Room gatehouseGroundFloorSE = new Room(""); // Add 4 rotten chairs & table, skeletons/bones, quivers of crossbow bolts, stairs leading up
-        Room gatehouseGroundFloorSW = new Room(""); // Add 4 rotten chairs & table, skeletons/bones, rusted sword on table?, stairs leading up
-        Room gatehouseMiddleFloorSE = new Room(""); 
-        Room gatehouseMiddleFloorSW = new Room("");
-        Room gatehouseMiddlePassage = new Room("");
-        Room gatehouseRoofSE = new Room("");
-        Room gatehouseRoofSW = new Room("");
+        Room gatehouseGroundFloorSE = new Room("on the eastern groundfloor of the Gatehouse in a small sparse room. Apparently guardsmen used to relax here."); // Add 4 rotten chairs & table, skeletons/bones, quivers of crossbow bolts, stairs leading up
+        Room gatehouseGroundFloorSW = new Room("on the western groundfloor of the Gatehouse in a small sparse room."); // Add 4 rotten chairs & table, skeletons/bones, rusted sword on table?, stairs leading up
+        Room gatehouseMiddleFloorSE = new Room("on the first floor of the Gatehouse, east side."); 
+        Room gatehouseMiddleFloorSW = new Room("on the first floor of the Gatehouse, west side.");
+        Room gatehouseMiddlePassage = new Room("passage above the gate - murderholes & acid bucket");
+        Room gatehouseRoofSE = new Room("On top of the SE side of the Gatehouse");
+        Room gatehouseRoofSW = new Room("On top of the SW side of the Gatehouse");
+        Room southEastWall = new Room("Southeast Wall");
+        Room southWestWall = new Room("Southwest Wall");
         
         // initialise room exits
         outside.setExit("north", courtyardSouth);
         courtyardSouth.setExit("south", outside);
         courtyardSouth.setExit("southeast", gatehouseGroundFloorSE);
         courtyardSouth.setExit("southwest", gatehouseGroundFloorSW);
-        gatehouseGroundFloorSE.setExit("northwest", courtyardSouth); // Gatehouse SE
+        //Gatehouse (Southeast)
+        gatehouseGroundFloorSE.setExit("northwest", courtyardSouth);
         gatehouseGroundFloorSE.setExit("up", gatehouseMiddleFloorSE);
         gatehouseMiddleFloorSE.setExit("down", gatehouseGroundFloorSE);
         gatehouseMiddleFloorSE.setExit("west", gatehouseMiddlePassage);
         gatehouseMiddleFloorSE.setExit("up", gatehouseRoofSE);
-        gatehouseRoofSE.setExit("down", gatehouseMiddleFloorSE); // Missing SE Wall, end off Gatehouse SE.
-        gatehouseMiddleFloorSW.setExit("northeast", courtyardSouth);
-        gatehouseMiddleFloorSW.setExit("up", gatehouseMiddleFloorSW);
-        gatehouseMiddleFloorSW.setExit("down", gatehouseMiddleFloorSW);
+        gatehouseRoofSE.setExit("down", gatehouseMiddleFloorSE);
+        gatehouseRoofSE.setExit("east", southEastWall);
+        //Gatehouse (Southwest)
+        gatehouseGroundFloorSW.setExit("northeast", courtyardSouth);
+        gatehouseGroundFloorSW.setExit("up", gatehouseMiddleFloorSW);
+        gatehouseMiddleFloorSW.setExit("down", gatehouseGroundFloorSW);
+        gatehouseMiddleFloorSW.setExit("east", gatehouseMiddlePassage);
+        gatehouseMiddleFloorSW.setExit("up", gatehouseRoofSW);
+        gatehouseRoofSW.setExit("down", gatehouseMiddleFloorSW);
+        gatehouseRoofSW.setExit("west", southWestWall);
+        //Gatehouse (Passage)
+        gatehouseMiddlePassage.setExit("west", gatehouseMiddleFloorSW);
+        gatehouseMiddlePassage.setExit("east", gatehouseMiddleFloorSE);
+        //Wall (East)
+        southEastWall.setExit("west", gatehouseRoofSE);
+        //Wall (West)
+        southWestWall.setExit("east", gatehouseRoofSW);
+        
         // add items
+        gatehouseGroundFloorSE.addNewItem("Sword", 5.0, "A rusty longsword");
+        
+        NPC enemy1 = new NPC(courtyardSouth, "Skeleton");
+        
         
         // Start location
         startRoom = outside; 
@@ -83,7 +105,8 @@ public class Game
         // execute them until the game is over.
                 
         boolean finished = false;
-        while (! finished) {
+        while (! finished) 
+        {
             Command command = parser.getCommand();
             finished = processCommand(command);
         }
@@ -91,7 +114,7 @@ public class Game
     }
 
     /**
-     * Print out the opening message for the player.
+     * Print out the opening message for the player
      */
     private void printWelcome()
     {
@@ -197,18 +220,11 @@ public class Game
         }
 
         String direction = command.getSecondWord();
-
+        
+        System.out.print(player.moveRoom(direction));
+        
         // Try to leave current room.
         Room nextRoom = player.getCurrentRoom().getExit(direction);
-
-        if (nextRoom == null) {
-            System.out.println("There is no door!");
-        }
-        else {
-            player.moveRoom(nextRoom);
-            printLocationInfo();
-            System.out.println();
-        }
     }
     
     /**
